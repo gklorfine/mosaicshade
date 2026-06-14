@@ -6,6 +6,7 @@
 # [ ] TODO: Arguments for shading limits (e.g., changing from 2-4 for light and 4+ for dark)
 # [ ] TODO: Different labeling schemes (e.g., label cells with numeric residual)
 # [ ] TODO: Generalize to n-dimensions (currently at 4)
+# [ ] TODO: Enable ability to turn legend off
 # ==================================================
 
 ## Setup
