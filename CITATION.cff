@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use MosaicShade, please cite it as follows."
+authors:
+  - family-names: Klorfine
+    given-names: Gavin M.
+title: "MosaicShade: Residual-based shading for mosaic plots in Python"
+version: 0.1.0
+date-released: 2026-06-14
+url: "https://github.com/gklorfine/mosaicshade"
+license: GPL-3.0-only
