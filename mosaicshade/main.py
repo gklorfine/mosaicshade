@@ -24,7 +24,7 @@ WHITE      = mcolors.hsv_to_rgb([0,   0.0, 1.0])
 RED_MID    = mcolors.hsv_to_rgb([0,   0.5, 1.0])
 RED_FULL   = mcolors.hsv_to_rgb([0,   1.0, 1.0])
 
-def mosaic(df : pd.DataFrame, freq : str, dims : list | None = None, **kwargs):
+def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | None = None, **kwargs):
     """
     Wrapper for statsmodels.graphics.mosaicplot.mosaic that implements residual-based shading.
 
@@ -32,16 +32,42 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list | None = None, **kwargs):
     ----------
     df : pd.DataFrame
         Data to plot
-    dims : list
-        Two to four dimensions to use for the mosaic. Defaults to all dimensions except the frequency column
+    dims : list or tuple, optional
+        Two to four dimensions (column names) to use for the mosaic. Defaults to all dimensions except the frequency column
     freq : str
         The frequency column of your DataFrame
     **kwargs
         Any remaining keyword arguments passed to statsmodels.graphics.mosaicplot.mosaic
     """
-    title = kwargs.pop('title', None)
 
+    # Check input
+    if not isinstance(df, pd.DataFrame):              raise TypeError("df must be a pandas DataFrame.")
+    if df.empty:                                      raise ValueError("df must contain at least one row.")
+    if not isinstance(freq, str):                     raise TypeError("freq must be a column name.")
+    if freq not in df.columns:                        raise ValueError(f"Frequency column freq={freq!r} not found.")
+    if freq in dims:                                  raise ValueError("freq cannot also be included in dims.")
+    if not isinstance(dims, (list, tuple)):           raise TypeError("dims must be a list or tuple of column names.")
+    if not all(isinstance(dim, str) for dim in dims): raise TypeError("Every element of dims must be a string.")
+
+    # Detour input checking to handle dims
     if dims is None: dims = [col for col in df.columns if col != freq]
+    else: dims = list(dims) # Convert to list if tuple
+
+    # Resume input checking
+    missing_cols = [col for col in dims if col not in df.columns]
+    if missing_cols:                                  raise ValueError(f"Dimensions {missing_cols} not found.")
+    if not (2 <= len(dims) <= 4):                     raise ValueError("dims must contain 2 to 4 columns.")
+    if len(dims) != len(set(dims)):                   raise ValueError("dims must not contain duplicate columns.")
+
+    frequencies = pd.to_numeric(df[freq], errors="coerce")
+    if frequencies.isna().any():                      raise ValueError("Frequencies must be numeric and non-missing.")
+    if not np.isfinite(frequencies).all():            raise ValueError("Frequencies must be finite.")
+    if (frequencies < 0).any():                       raise ValueError("Frequencies must be nonnegative.")
+    if frequencies.sum() <= 0:                        raise ValueError("The total frequency must be greater than zero.")
+
+    title = kwargs.pop('title', None)
+    labelizer = kwargs.pop('labelizer', None)
+    gap = kwargs.pop('gap', None)
 
     grouped_counts = df.groupby(dims, observed=True)[freq].sum()
 
@@ -83,20 +109,25 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list | None = None, **kwargs):
 
             return {'facecolor': facecolor, 'linestyle': linestyle, 'edgecolor': edgecolor}
         return res_color
-
-    # With values as labels
-    def labeling_values(k): 
-        return str(counts.loc[k])
     
     # Gaps b/w rectangles
-    gap_list = [.01,.01]
-    for i in range(2, len(dims)): gap_list.append(.05)
+    if gap is None:
+        gap = [.01,.01]
+        for _ in range(2, len(dims)): gap.append(.05)
+    else:
+        if len(gap) != len(dims): raise ValueError("Length of supplied gap argument must be equal to the number of dimensions supplied.")
+
+    # With values as labels if no default supplied
+    def labeling_values(k): return str(counts.loc[k])
+
+    if labelizer is None: labelizer = labeling_values
 
     # Make plot in way that allows black border removal
     fig, rects = sm_mosaic(
-        counts, 
-        properties=Friendly_shading(std_res), labelizer=labeling_values, 
-        gap=gap_list, #[.01] * len(dims),
+        counts,
+        properties=Friendly_shading(std_res),
+        labelizer=labelizer,
+        gap=gap,
         **kwargs
     )
 
