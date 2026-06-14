@@ -12,17 +12,16 @@
 import pandas as pd
 import numpy as np
 from statsmodels.graphics.mosaicplot import mosaic as sm_mosaic
-from scipy.stats import chi2_contingency
+from scipy.stats.contingency import expected_freq
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import matplotlib.patches as mpatches
 
-## Create same colours from R
-BLUE_FULL  = mcolors.hsv_to_rgb([2/3, 1.0, 1.0])
-BLUE_MID   = mcolors.hsv_to_rgb([2/3, 0.5, 1.0])
-WHITE      = mcolors.hsv_to_rgb([0,   0.0, 1.0])
-RED_MID    = mcolors.hsv_to_rgb([0,   0.5, 1.0])
-RED_FULL   = mcolors.hsv_to_rgb([0,   1.0, 1.0])
+## Create same colours from R. Use 'WHITE' for white.
+BLUE_FULL = mcolors.hsv_to_rgb([2/3, 1.0, 1.0])
+BLUE_MID  = mcolors.hsv_to_rgb([2/3, 0.5, 1.0])
+RED_MID   = mcolors.hsv_to_rgb([0,   0.5, 1.0])
+RED_FULL  = mcolors.hsv_to_rgb([0,   1.0, 1.0])
 
 def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | None = None, **kwargs):
     """
@@ -41,23 +40,24 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | N
     """
 
     # Check input
+    if "properties" in kwargs:                        raise TypeError("properties is managed by mosaicshade.")
     if not isinstance(df, pd.DataFrame):              raise TypeError("df must be a pandas DataFrame.")
     if df.empty:                                      raise ValueError("df must contain at least one row.")
     if not isinstance(freq, str):                     raise TypeError("freq must be a column name.")
     if freq not in df.columns:                        raise ValueError(f"Frequency column freq={freq!r} not found.")
-    if freq in dims:                                  raise ValueError("freq cannot also be included in dims.")
-    if not isinstance(dims, (list, tuple)):           raise TypeError("dims must be a list or tuple of column names.")
-    if not all(isinstance(dim, str) for dim in dims): raise TypeError("Every element of dims must be a string.")
 
-    # Detour input checking to handle dims
     if dims is None: dims = [col for col in df.columns if col != freq]
+    elif not isinstance(dims, (list, tuple)):         raise TypeError("dims must be a list or tuple of column names.")
     else: dims = list(dims) # Convert to list if tuple
 
-    # Resume input checking
+    if freq in dims:                                  raise ValueError("freq cannot also be included in dims.")
+    if not all(isinstance(dim, str) for dim in dims): raise TypeError("Every element of dims must be a string.")
+
     missing_cols = [col for col in dims if col not in df.columns]
     if missing_cols:                                  raise ValueError(f"Dimensions {missing_cols} not found.")
     if not (2 <= len(dims) <= 4):                     raise ValueError("dims must contain 2 to 4 columns.")
     if len(dims) != len(set(dims)):                   raise ValueError("dims must not contain duplicate columns.")
+    if df[dims].isna().any().any():                   raise ValueError("Dimension columns must not contain missing values.")
 
     frequencies = pd.to_numeric(df[freq], errors="coerce")
     if frequencies.isna().any():                      raise ValueError("Frequencies must be numeric and non-missing.")
@@ -68,6 +68,26 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | N
     title = kwargs.pop('title', None)
     labelizer = kwargs.pop('labelizer', None)
     gap = kwargs.pop('gap', None)
+
+    if labelizer is not None and not callable(labelizer): raise TypeError("labelizer must be a callable or None.")
+    if gap is not None:
+        if not isinstance(gap, (list, tuple)):            raise TypeError("gap must be a list or tuple of numbers.")
+        if len(gap) != len(dims):                         raise ValueError("gap must contain one value for each dimension.")
+        if not all(
+            isinstance(value, (int, float, np.number))
+            and not isinstance(value, (bool, np.bool_))
+            for value in gap
+        ):                                                raise TypeError("Every gap value must be numeric.")
+        if not all(np.isfinite(value) for value in gap):  raise ValueError("Every gap value must be finite.")
+        if not all(0 <= value < 1 for value in gap):      raise ValueError("Every gap value must be between 0 and 1.")
+
+        gap = list(gap)
+    else:
+        gap = [.01,.01]
+        for _ in range(2, len(dims)): gap.append(.05)
+
+    df = df.copy()
+    df[freq] = frequencies
 
     grouped_counts = df.groupby(dims, observed=True)[freq].sum()
 
@@ -84,9 +104,15 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | N
     shape = [len(level) for level in levels]
     obs = counts.to_numpy().reshape(shape)
 
-    ## Calculate Pearson residuals. Use model of independence for this example
-    _, _, _, expected = chi2_contingency(obs)
-    std_res_array = (obs - expected) / np.sqrt(expected)
+    ## Calculate Pearson residuals under independence. Zero expected
+    ## frequencies receive a residual of zero, matching vcd's behavior.
+    expected = expected_freq(obs)
+    std_res_array = np.divide(
+        obs - expected,
+        np.sqrt(expected),
+        out=np.zeros_like(expected, dtype=float),
+        where=expected > 0,
+    )
 
     # Wrap back into a MultiIndex Series so residuals[k] lookup works
     std_res = pd.Series(std_res_array.ravel(), index=index)
@@ -109,13 +135,6 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | N
 
             return {'facecolor': facecolor, 'linestyle': linestyle, 'edgecolor': edgecolor}
         return res_color
-    
-    # Gaps b/w rectangles
-    if gap is None:
-        gap = [.01,.01]
-        for _ in range(2, len(dims)): gap.append(.05)
-    else:
-        if len(gap) != len(dims): raise ValueError("Length of supplied gap argument must be equal to the number of dimensions supplied.")
 
     # With values as labels if no default supplied
     def labeling_values(k): return str(counts.loc[k])
