@@ -1,4 +1,5 @@
 .DS_Store
+/.vscode/
 /mosaicshade.egg-info/
 /build/
 /dist/

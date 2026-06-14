@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mosaicshade"
+version = "0.1.0"
+description = "Residual-based shading for mosaic plots in Python"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Gavin M. Klorfine", email = "gklorfin@yorku.ca" }
+]
+keywords = [
+    "data-visualization",
+    "matplotlib",
+    "mosaic-plot",
+    "mosaic",
+    "mosaic-display",
+    "pandas",
+    "statistics",
+    "categorical-data",
+    "statsmodels"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Matplotlib",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Sociology",
+    "Topic :: Scientific/Engineering :: Visualization"
+]
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "scipy",
+    "statsmodels",
+]
+
+[project.urls]
+Homepage = "https://github.com/gklorfine/mosaicshade"
+Repository = "https://github.com/gklorfine/mosaicshade"
+Issues = "https://github.com/gklorfine/mosaicshade/issues"
+
+[tool.setuptools.packages.find]
+include = ["mosaicshade*"]
