@@ -2,8 +2,9 @@
 # The below TODOs are listed in order of priority:
 # ==================================================
 # [ ] TODO: Allow input other than just type = pd.DataFrame. Goal is to take same types as statsmodels function
-# [ ] TODO: Arguments for shading limits (e.g., changing from 2-4 for light and 4+ for dark)
 # [ ] TODO: Arguments for statistical models other than independence
+# [ ] TODO: Arguments for shading limits (e.g., changing from 2-4 for light and 4+ for dark)
+# [ ] TODO: Different labeling schemes (e.g., label cells with numeric residual)
 # [ ] TODO: Generalize to n-dimensions (currently at 4)
 # ==================================================
 
@@ -218,4 +219,5 @@ def mosaic(df : pd.DataFrame, freq : str, dims : list | None = None, **kwargs):
                     bbox_to_anchor=(1.18, 0.5), loc='center left', frameon=False)
     
     plt.tight_layout()
-    plt.show()
+    
+    return fig, ax
