@@ -25,18 +25,18 @@ RED_FULL  = mcolors.hsv_to_rgb([0,   1.0, 1.0])
 
 def mosaic(df : pd.DataFrame, freq : str, dims : list[str] | tuple[str, ...] | None = None, **kwargs):
     """
-    Wrapper for statsmodels.graphics.mosaicplot.mosaic that implements residual-based shading.
+    Extension of statsmodels.graphics.mosaicplot.mosaic that implements residual-based shading.
 
     Parameters
     ----------
     df : pd.DataFrame
-        Data to plot
-    dims : list or tuple, optional
-        Two to four dimensions (column names) to use for the mosaic. Defaults to all dimensions except the frequency column
+        The data to plot.
     freq : str
-        The frequency column of your DataFrame
+        The frequency column of your DataFrame.
+    dims : list or tuple, optional
+        Two to four dimensions (column names) to use for the mosaic. Defaults to all dimensions except the frequency column.
     **kwargs
-        Any remaining keyword arguments passed to statsmodels.graphics.mosaicplot.mosaic
+        Any remaining keyword arguments passed to statsmodels.graphics.mosaicplot.mosaic(). Note that the properties argument is managed by mosaicshade and cannot be changed.
     """
 
     # Check input
