@@ -4,7 +4,7 @@ authors:
   - family-names: Klorfine
     given-names: Gavin M.
 title: "MosaicShade: Residual-based shading for mosaic plots in Python"
-version: 0.1.0
+version: 0.1.1
 date-released: 2026-06-14
 url: "https://github.com/gklorfine/mosaicshade"
 license: GPL-3.0-only

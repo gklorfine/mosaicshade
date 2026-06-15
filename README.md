@@ -57,31 +57,18 @@ df = pd.DataFrame({
 df
 ```
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-&#10;    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-&#10;    .dataframe thead th {
-        text-align: right;
-    }
-</style>
+<!-- Keep the following heading separate from the executable cell. -->
 
 |     | Treatment | Outcome | Sex    | Freq |
-|-----|-----------|---------|--------|------|
-| 0   | A         | Good    | Female | 20   |
-| 1   | A         | Good    | Male   | 23   |
-| 2   | A         | Bad     | Female | 3    |
-| 3   | A         | Bad     | Male   | 4    |
-| 4   | B         | Good    | Female | 2    |
-| 5   | B         | Good    | Male   | 2    |
-| 6   | B         | Bad     | Female | 10   |
-| 7   | B         | Bad     | Male   | 72   |
-
-</div>
+|----:|:----------|:--------|:-------|-----:|
+|   0 | A         | Good    | Female |   20 |
+|   1 | A         | Good    | Male   |   23 |
+|   2 | A         | Bad     | Female |    3 |
+|   3 | A         | Bad     | Male   |    4 |
+|   4 | B         | Good    | Female |    2 |
+|   5 | B         | Good    | Male   |    2 |
+|   6 | B         | Bad     | Female |   10 |
+|   7 | B         | Bad     | Male   |   72 |
 
 <!-- Keep the following heading separate from the executable cell. -->
 
