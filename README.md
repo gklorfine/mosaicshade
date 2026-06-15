@@ -93,7 +93,6 @@ import mosaicshade
 import matplotlib.pyplot as plt
 
 fig, ax = mosaicshade.mosaic(df, freq='Freq')
-fig.savefig('images/mosaic_3dims.png', dpi=150, bbox_inches='tight')
 plt.show() # Show the plot
 ```
 
@@ -111,7 +110,6 @@ fig, ax = mosaicshade.mosaic(
     freq='Freq',
     dims=['Treatment', 'Outcome']
 )
-fig.savefig('images/mosaic_2dims.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 
@@ -133,7 +131,6 @@ fig, ax = mosaicshade.mosaic(
     dims=['Treatment', 'Outcome'],
     title='Shaded Mosaic'
 )
-fig.savefig('images/mosaic_title.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 

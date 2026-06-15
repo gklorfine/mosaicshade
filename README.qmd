@@ -65,8 +65,17 @@ import mosaicshade
 import matplotlib.pyplot as plt
 
 fig, ax = mosaicshade.mosaic(df, freq='Freq')
-fig.savefig('images/mosaic_3dims.png', dpi=150, bbox_inches='tight')
 plt.show() # Show the plot
+```
+
+```{python}
+#| label: save_mosaic_3dims
+#| echo: false
+#| output: false
+
+saved_fig, _ = mosaicshade.mosaic(df, freq='Freq')
+saved_fig.savefig('images/mosaic_3dims.png', dpi=300, bbox_inches='tight')
+plt.close(saved_fig)
 ```
 
 ![Three-dimensional shaded mosaic plot](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_3dims.png)
@@ -84,8 +93,21 @@ fig, ax = mosaicshade.mosaic(
     freq='Freq',
     dims=['Treatment', 'Outcome']
 )
-fig.savefig('images/mosaic_2dims.png', dpi=150, bbox_inches='tight')
 plt.show()
+```
+
+```{python}
+#| label: save_mosaic_2dims
+#| echo: false
+#| output: false
+
+saved_fig, _ = mosaicshade.mosaic(
+    df,
+    freq='Freq',
+    dims=['Treatment', 'Outcome']
+)
+saved_fig.savefig('images/mosaic_2dims.png', dpi=300, bbox_inches='tight')
+plt.close(saved_fig)
 ```
 
 ![Two-dimensional shaded mosaic plot](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_2dims.png)
@@ -104,8 +126,22 @@ fig, ax = mosaicshade.mosaic(
     dims=['Treatment', 'Outcome'],
     title='Shaded Mosaic'
 )
-fig.savefig('images/mosaic_title.png', dpi=150, bbox_inches='tight')
 plt.show()
+```
+
+```{python}
+#| label: save_mosaic_title
+#| echo: false
+#| output: false
+
+saved_fig, _ = mosaicshade.mosaic(
+    df,
+    freq='Freq',
+    dims=['Treatment', 'Outcome'],
+    title='Shaded Mosaic'
+)
+saved_fig.savefig('images/mosaic_title.png', dpi=300, bbox_inches='tight')
+plt.close(saved_fig)
 ```
 
 ![Two-dimensional shaded mosaic plot with a title](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_title.png)
