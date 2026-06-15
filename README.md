@@ -96,6 +96,10 @@ fig, ax = mosaicshade.mosaic(df, freq='Freq')
 plt.show() # Show the plot
 ```
 
+<!-- Keep the following heading separate from the executable cell. -->
+
+<!-- Keep the following heading separate from the executable cell. -->
+
 ![Three-dimensional shaded mosaic
 plot](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_3dims.png)
 
@@ -112,6 +116,10 @@ fig, ax = mosaicshade.mosaic(
 )
 plt.show()
 ```
+
+<!-- Keep the following heading separate from the executable cell. -->
+
+<!-- Keep the following heading separate from the executable cell. -->
 
 ![Two-dimensional shaded mosaic
 plot](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_2dims.png)
@@ -134,8 +142,12 @@ fig, ax = mosaicshade.mosaic(
 plt.show()
 ```
 
+<!-- Keep the following heading separate from the executable cell. -->
+
 ![Two-dimensional shaded mosaic plot with a
 title](https://raw.githubusercontent.com/gklorfine/mosaicshade/main/images/mosaic_title.png)
+
+<!-- Keep the following heading separate from the executable cell. -->
 
 ## API
 
