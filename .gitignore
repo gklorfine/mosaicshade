@@ -1,7 +1,13 @@
 .DS_Store
 /.vscode/
+__pycache__/
+*.py[cod]
+/.pytest_cache/
+/.coverage
 /mosaicshade.egg-info/
 /build/
 /dist/
 /README_files/
 README.html
+/.quarto/
+**/*.quarto_ipynb
