@@ -64,7 +64,7 @@ To make a mosaic from this data, we can call the `mosaicshade.mosaic` function, 
 import mosaicshade
 import matplotlib.pyplot as plt
 
-fig, ax = mosaicshade.mosaic(df, freq='Freq')
+mosaicshade.mosaic(df, freq='Freq')
 plt.show() # Show the plot
 ```
 
@@ -92,7 +92,7 @@ We can optionally select specific dimensions (columns) to use in this plot, summ
 #| label: mosaic_2dims
 #| output: false
 
-fig, ax = mosaicshade.mosaic(
+mosaicshade.mosaic(
     df,
     freq='Freq',
     dims=['Treatment', 'Outcome']
@@ -128,7 +128,7 @@ Remaining keyword arguments from [`statsmodels.graphics.mosaicplot.mosaic`](http
 #| label: mosaic_title
 #| output: false
 
-fig, ax = mosaicshade.mosaic(
+mosaicshade.mosaic(
     df,
     freq='Freq',
     dims=['Treatment', 'Outcome'],

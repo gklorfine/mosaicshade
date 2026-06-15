@@ -92,7 +92,7 @@ function, specifying the frequency column with the `freq` argument:
 import mosaicshade
 import matplotlib.pyplot as plt
 
-fig, ax = mosaicshade.mosaic(df, freq='Freq')
+mosaicshade.mosaic(df, freq='Freq')
 plt.show() # Show the plot
 ```
 
@@ -109,7 +109,7 @@ We can optionally select specific dimensions (columns) to use in this
 plot, summing over those that are excluded:
 
 ``` python
-fig, ax = mosaicshade.mosaic(
+mosaicshade.mosaic(
     df,
     freq='Freq',
     dims=['Treatment', 'Outcome']
@@ -133,7 +133,7 @@ used to perform the shading). For example, here is how you may add a
 title to the above plot:
 
 ``` python
-fig, ax = mosaicshade.mosaic(
+mosaicshade.mosaic(
     df,
     freq='Freq',
     dims=['Treatment', 'Outcome'],
