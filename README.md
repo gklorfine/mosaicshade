@@ -9,8 +9,10 @@ version](https://img.shields.io/pypi/v/mosaicshade.svg)](https://pypi.org/projec
 [![Python
 versions](https://img.shields.io/pypi/pyversions/mosaicshade.svg)](https://pypi.org/project/mosaicshade/)
 [![Tests](https://github.com/gklorfine/mosaicshade/actions/workflows/tests.yml/badge.svg)](https://github.com/gklorfine/mosaicshade/actions/workflows/tests.yml)
-[![Downloads](https://static.pepy.tech/badge/mosaicshade.png)](https://pepy.tech/project/mosaicshade)
-[![License](https://img.shields.io/github/license/gklorfine/mosaicshade.png)](https://github.com/gklorfine/mosaicshade/blob/main/LICENSE)
+<a href="https://pepy.tech/projects/mosaicshade">
+<img alt="PyPI Downloads" src="https://static.pepy.tech/personalized-badge/mosaicshade?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads">
+</a> [![License:
+GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-orange.svg)](https://github.com/gklorfine/mosaicshade/blob/main/LICENSE)
 
 ## Overview
 
